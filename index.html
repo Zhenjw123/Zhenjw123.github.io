@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jiawei Zhen - Personal Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+         header h1 {
+            margin-top: 10px;
+            padding: 8px 16px;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 24px; /* 添加这一行来设置字体大小 */
+        }
+        nav {
+            margin-top: 10px;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+         h2, h3 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .skills, .awards, .projects {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .project, .award, .skill {
+            flex: 1 1 300px;
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: white;
+            margin-top: 40px;
+        }
+        a.button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Zhen Jiawei</h1>
+        <p>Chongqing University · Computer Science and Technology</p>
+        <nav>
+            <a href="#education">Education</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#awards">Awards</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="section" id="education">
+            <h2>Education</h2>
+            <p><strong>Chongqing University (985 Project)</strong> <br>
+            School of Computer Science <br>
+            September 2022 – June 2026 <br>
+            GPA: 3.94/4.0 (92.25/100) · Top 0.6%</p>
+        </section>
+
+        <section class="section" id="skills">
+            <h2>Skills</h2>
+            <div class="skills">
+                <div class="skill">
+                    <h3>Programming Languages</h3>
+                    <ul>
+                        <li>Python, C++, TypeScript</li>
+                        <li>Vue, Node.js, Java</li>
+                        <li>LaTeX</li>
+                    </ul>
+                </div>
+                <div class="skill">
+                    <h3>Core Courses</h3>
+                    <ul>
+                        <li>Software Engineering </li>
+                        <li>Operating Systems </li>
+                        <li>Machine Learning Fundamentals </li>
+                        <li>Computer Networks </li>
+                        <li>Database Systems </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="projects">
+            <h2>Projects</h2>
+            <div class="projects">
+                <div class="project">
+                    <h3>Edge-Cloud Collaborative Deep Learning Inference Framework</h3>
+                    <p><em>December 2023 – December 2024</em></p>
+                    <p>Core member. Used collaborative inference and compression techniques to accelerate model inference. Delivered a software product and a pending paper.</p>
+                </div>
+                <div class="project">
+                    <h3>Distributed Cluster-Based Sentiment Analysis Prediction</h3>
+                    <p><em>April 2024 – July 2024</em></p>
+                    <p>Project leader. Built a big data analysis system using Hadoop/Spark. Gained hands-on experience in full project development cycles.</p>
+                </div>
+                <!-- <div class="project">
+                    <h3>Deep Learning-Based Traffic Flow Prediction</h3>
+                    <p><em>October 2022 – October 2023</em></p>
+                    <p>Project leader. Improved GCN-based algorithms for traffic prediction. Completed literature review, algorithm replication, and minor modifications.</p>
+                </div> -->
+            </div>
+        </section>
+
+        <section class="section" id="awards">
+            <h2>Awards</h2>
+            <div class="awards">
+                <div class="award">
+                    <h3>National & Provincial-Level</h3>
+                    <ul>
+                        <li>Undergraduate National Scholarship (2022–2023)</li>
+                        <li>Changjiang Electric Power Scholarship</li>
+                        <li>1st Prize in the 15th Chongqing Collegiate Mathematics Competition</li>
+                        <li>1st Prize in the 15th Chongqing "Blue Bridge Cup" (C++ Programming)</li>
+                        <li>1st Prize in the Chongqing Collegiate Mathematical Modeling Competition</li>
+                    
+                    </ul>
+                </div>
+                <div class="award">
+                    <h3>University-Level</h3>
+                    <ul>
+                        <li>Chongqing University Excellent Student</li>
+                        <li>Outstanding Student, Moral and Ethical Excellence Award</li>
+                        <li>Outstanding Team/Individual in Social Practice</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="contact">
+            <h2>Contact</h2>
+            <p><strong>Phone:</strong> (+86) 159-6852-1357</p>
+            <p><strong>Email:</strong> <a href="mailto:1963013766@qq.com">1963013766@qq.com</a></p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Zhen Jiawei. All rights reserved.</p>
+    </footer>
+</body>
+</html>
