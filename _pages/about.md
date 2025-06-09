@@ -27,15 +27,11 @@ There are few things in my homepage because I am still a freshman. I will update
  - *2023* 1st Prize in the 15th Chongqing Collegiate Mathematics Competition
  - *2024* 1st Prize in the 15th Chongqing "Blue Bridge Cup" (C++ Programming)
  - *2024* 1st Prize in the Chongqing Collegiate Mathematical Modeling Competition
-<!-- - *2021.10* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
-- *2021.09* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet.  -->
 
 # 📖 Educations
 - *2022.06 - 2025.05(now)*, Computer Science and Technology, **Chongqing University**, Chongqing, China.
 
 <!-- # 💬 Invited Talks -->
-- *2021.06*, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
-- *2021.03*, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet.  \| [\[video\]](https://github.com/)
 
 <!-- # 💻 Internships -->
 <!-- - *2019.05 - 2020.02*, [Lorem](https://github.com/), China. -->
