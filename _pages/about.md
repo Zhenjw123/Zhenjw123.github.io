@@ -15,12 +15,12 @@ Hello! I am Jiawei Zhen, a third-year undergraduate student at Chongqing Univers
 
 There are few things in my homepage because I am still a freshman. I will update it as I learn more about myself and my research.
 
-
+<span class='anchor' id='-news'></span>
 # 🔥 News
 - *2025.05*: &nbsp;🎉🎉 The Homepage Website created!
 - *2022.06*: &nbsp;🎉🎉 Zhen Jiawei was admitted to Chongqing University as an undergraduate student !
 
-
+<span class='anchor' id='-honors-and-awards'></span>
 # 🎖 Honors and Awards
  - *2022–2023* Undergraduate National Scholarship
  - *2023-2024* Changjiang Electric Power Scholarship
@@ -28,6 +28,7 @@ There are few things in my homepage because I am still a freshman. I will update
  - *2024* 1st Prize in the 15th Chongqing "Blue Bridge Cup" (C++ Programming)
  - *2024* 1st Prize in the Chongqing Collegiate Mathematical Modeling Competition
 
+<span class='anchor' id='-educations'></span>
 # 📖 Educations
 - *2022.06 - 2025.05(now)*, Computer Science and Technology, **Chongqing University**, Chongqing, China.
 
@@ -36,6 +37,7 @@ There are few things in my homepage because I am still a freshman. I will update
 <!-- # 💻 Internships -->
 <!-- - *2019.05 - 2020.02*, [Lorem](https://github.com/), China. -->
 
+<span class='anchor' id='-publications'></span>
 # 📝 Publications 
 
 <!-- <div class='paper-box'><div class='paper-box-image'><div><div class="badge">CVPR 2016</div><img src='images/500x300.png' alt="sym" width="100%"></div></div>
