@@ -9,16 +9,16 @@ redirect_from:
 ---
 
 
-<span class='anchor' id='about-me'></span>
+<span class='anchor' id='-about-me'></span>
 
-Hello! I am Jiawei Zhen, a third-year undergraduate student at Chongqing University, majoring in Computer Science and Technology. I am interested in computer vision, deep learning, and artificial intelligence. 
+Hello! I am Jiawei Zhen, a fourth-year undergraduate student at Chongqing University, majoring in Computer Science and Technology. I am interested in computer network, deep learning, and artificial intelligence. 
 
 There are few things in my homepage because I am still a freshman. I will update it as I learn more about myself and my research.
 
 <span class='anchor' id='-news'></span>
 # 🔥 News
-- *2025.05*: &nbsp;🎉🎉 The Homepage Website created!
 - *2022.06*: &nbsp;🎉🎉 Zhen Jiawei was admitted to Chongqing University as an undergraduate student !
+- *2025.05*: &nbsp;🎉🎉 The Homepage Website created!
 
 <span class='anchor' id='-honors-and-awards'></span>
 # 🎖 Honors and Awards
@@ -30,7 +30,8 @@ There are few things in my homepage because I am still a freshman. I will update
 
 <span class='anchor' id='-educations'></span>
 # 📖 Educations
-- *2022.06 - 2025.05(now)*, Computer Science and Technology, **Chongqing University**, Chongqing, China.
+- *2022.06 - 2026.06(Expected)*, Computer Science and Technology, **Chongqing University**, Chongqing, China.
+[📄View the transcript](/docs/transcript_0911.pdf)
 
 <!-- # 💬 Invited Talks -->
 
