@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的旅行足迹 - 中国城市地图</title>
+    <style>
+        /* --- 通用样式 --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+        }
+
+        /* --- 面包屑导航 --- */
+        .breadcrumb {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .breadcrumb-item {
+            color: #3498db;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb-item:hover {
+            color: #2980b9;
+        }
+
+        .breadcrumb-separator {
+            color: #bdc3c7;
+        }
+
+        /* --- 地图容器与SVG --- */
+        .map-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .map-svg {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 10 / 7;
+            cursor: pointer;
+        }
+
+        .loading-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            display: none;
+        }
+
+        /* --- 地图路径配色方案 --- */
+        .province-path,
+        .city-path {
+            stroke: #ffffff;
+            stroke-width: 1;
+            cursor: pointer;
+            transition: fill 0.3s ease, transform 0.3s ease;
+        }
+
+        /* 省份默认样式 */
+        /* .province-path {
+            fill: #aed6f1; 
+        } */
+
+        .province-path:hover {
+            /* fill: #85c1e9; */
+            fill: #d68af1;
+        }
+
+        /* .province-path.visited {
+            fill: #f5b7b1;
+        }
+
+        .province-path.visited_full {
+            fill: #f25648;
+        } */
+
+        .province-path.visited:hover {
+            fill: #d68af1;
+        }
+
+        /* 城市默认样式 */
+        .city-path {
+            fill: #d7bde2;
+        }
+
+        .city-path:hover {
+            fill: #c39bd3;
+        }
+
+        /* .city-path.visited {
+            fill: #f7dc6f;
+        }
+
+        .city-path.visited:hover {
+            fill: #f4d03f;
+        } */
+
+        /* --- 文字标注样式 --- */
+        .province-label,
+        .city-label {
+            font-family: "LiSu", "隶书", "STLiti", serif;
+            pointer-events: none;
+            text-anchor: middle;
+            dominant-baseline: central;
+        }
+
+        .province-label {
+            font-size: 14px;
+            fill: #2c3e50;
+            font-weight: bold;
+        }
+
+        .city-label {
+            font-size: 10px;
+            fill: #7f8c8d;
+        }
+
+        /* --- 跟随鼠标的工具提示框 --- */
+        .floating-tooltip {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            color: #333;
+        }
+
+        /* --- 模态框样式 --- */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            background: white;
+            margin: 5% auto;
+            padding: 0;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            background: #d15354;
+            color: white;
+            padding: 20px;
+            height: 60;
+            border-radius: 15px 15px 0 0;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-body {
+            padding: 20px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .record-item {
+            background: #fff;
+            border: 2px solid #e86f52;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .record-date {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .record-rating {
+            color: #f39c12;
+            margin-bottom: 8px;
+        }
+
+        .record-review {
+            line-height: 1.5;
+        }
+
+        .no-records {
+            text-align: center;
+            color: #7f8c8d;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌏 我的旅行足迹</h1>
+        </div>
+
+        <div class="breadcrumb" id="breadcrumb">
+        </div>
+
+        <div class="map-container">
+            <div class="loading-indicator" id="loading">正在加载地图...</div>
+            <svg class="map-svg" id="mapSvg"></svg>
+            <div class="floating-tooltip" id="floatingTooltip"></div>
+        </div>
+    </div>
+
+    <div id="cityModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+        // --- 全局变量和初始化 ---
+        const svg = d3.select("#mapSvg");
+        const width = svg.node().getBoundingClientRect().width;
+        const height = width * 0.7;
+        svg.attr("viewBox", `0 0 ${width} ${height}`);
+
+        const g = svg.append("g"); // 用于缩放和平移的组元素
+        const mapLayer = g.append("g").attr("class", "map-layer"); // 地图路径层
+        const labelLayer = g.append("g").attr("class", "label-layer"); // 文字标注层
+
+        const floatingTooltip = d3.select("#floatingTooltip");
+        const loadingIndicator = document.getElementById('loading');
+
+        let travelData = {};
+        let provinceCityMap = {};
+        let currentView = 'china'; // 'china' 或 'province'
+        let currentProvince = null;
+
+        const projection = d3.geoMercator().center([104.1, 37.9]).scale(width * 0.9).translate([width / 2, height / 2]);
+        const pathGenerator = d3.geoPath().projection(projection);
+
+        // 设置zoom行为
+        const zoom = d3.zoom()
+            .scaleExtent([0.5, 10])
+            .on("zoom", handleZoom);
+
+        svg.call(zoom);
+
+        init();
+
+        async function init() {
+            await loadTravelData();
+            updateBreadcrumb();
+            renderChinaMap();
+        }
+
+        // --- 数据加载 ---
+        async function loadTravelData() {
+            travelData = await d3.json('./travelData.json');
+        }
+
+        function getProvinceVisitedRatio(provinceName, globalGeoJson, travelData) {
+            // 获取该省份的 childNum（城市总数）
+            const provinceFeature = globalGeoJson.features.find(f => f.properties.name === provinceName);
+            const total = provinceFeature ? provinceFeature.properties.childNum : 0;
+            // 已访问城市数（遍历 travelData）
+            let visited = 0;
+            for (const cityName in travelData) {
+                const cityData = travelData[cityName];
+                if (cityData.province === provinceName) {
+                    visited++;
+                }
+            }
+            console.log(provinceName, 'total:', total, 'visited:', visited);
+            // 比例
+            if (total === 0) return 0;
+            else if (isDirectMunicipality(provinceName)) return 1;
+            return visited / total;
+        }
+
+        // --- 地图渲染 ---
+        async function renderChinaMap() {
+            showLoading(true);
+            currentView = 'china';
+            currentProvince = null;
+
+            const chinaGeoJson = await d3.json('./json/china.json');
+
+            // 清理旧地图
+            mapLayer.selectAll("*").remove();
+            labelLayer.selectAll("*").remove();
+
+            // 渐变色插值器
+            const colorInterpolate = d3.interpolateRgb("#f5b7b1", "#f25648");
+
+            // 绘制省份路径
+            mapLayer.selectAll(".province-path")
+                .data(chinaGeoJson.features)
+                .enter().append("path")
+                .attr("class", "province-path")
+                .attr("d", pathGenerator)
+                .attr("fill", d => {
+                    const ratio = getProvinceVisitedRatio(d.properties.name, chinaGeoJson, travelData);
+                    return ratio > 0 ? colorInterpolate(ratio) : "#aed6f1";
+                })
+                .on("click", (event, d) => {
+                    event.stopPropagation();
+                    if (isDirectMunicipality(d.properties.name)) {
+                        showCityDetails(d.properties.name);
+                    } else {
+                        zoomToProvince(d);
+                    }
+                })
+                .on("mouseover", (event, d) => showFloatingTooltip(event, d.properties.name))
+                .on("mousemove", (event, d) => moveFloatingTooltip(event))
+                .on("mouseout", hideFloatingTooltip);
+
+            // 添加省份名称标注
+            labelLayer.selectAll(".province-label")
+                .data(chinaGeoJson.features)
+                .enter().append("text")
+                .attr("class", "province-label")
+                .attr("x", d => pathGenerator.centroid(d)[0])
+                .attr("y", d => pathGenerator.centroid(d)[1])
+                .text(d => d.properties.name);
+
+            showLoading(false);
+        }
+
+        async function renderProvinceMap(provinceData) {
+            showLoading(true);
+            currentView = 'province';
+            currentProvince = provinceData;
+
+            const provinceGeoJson = await d3.json(`./json/${provinceData.properties.id}.json`);
+
+            provinceCityMap = {};
+            provinceGeoJson.features.forEach(f => {
+                provinceCityMap[f.properties.name] = true;
+            });
+
+            // 清理旧地图
+            mapLayer.selectAll("*").remove();
+            labelLayer.selectAll("*").remove();
+
+            // 绘制城市路径
+            mapLayer.selectAll(".city-path")
+                .data(provinceGeoJson.features)
+                .enter().append("path")
+                .attr("class", d => `city-path ${travelData[d.properties.name] ? 'visited' : ''}`)
+                .attr("d", pathGenerator)
+                .on("click", (event, d) => {
+                    event.stopPropagation();
+                    showCityDetails(d.properties.name);
+                })
+                .on("mouseover", (event, d) => showFloatingTooltip(event, d.properties.name))
+                .on("mousemove", (event, d) => moveFloatingTooltip(event))
+                .on("mouseout", hideFloatingTooltip);
+
+            // 添加城市名称标注（使用缩放后的字体大小）
+            // 获取当前缩放比例（默认为1）
+            let currentTransform = d3.zoomTransform(svg.node());
+            let scale = currentTransform.k || 1;
+            labelLayer.selectAll(".city-label")
+                .data(provinceGeoJson.features)
+                .enter().append("text")
+                .attr("class", "city-label")
+                .attr("x", d => pathGenerator.centroid(d)[0])
+                .attr("y", d => pathGenerator.centroid(d)[1])
+                .style("font-size", d => {
+                    const bounds = pathGenerator.bounds(d);
+                    const dx = bounds[1][0] - bounds[0][0];
+                    const dy = bounds[1][1] - bounds[0][1];
+                    const size = Math.max(dx, dy);
+                    // 字体大小与地理范围和缩放比例相关，区间限制，分母调大
+                    const fontSize = Math.max(1, Math.min(20, size * scale / 50));
+                    return fontSize + "px";
+                })
+                .text(d => d.properties.name);
+
+            showLoading(false);
+        }
+
+        // --- 交互功能 ---
+        function handleZoom(event) {
+            const { transform } = event;
+            g.attr("transform", transform);
+        }
+
+        function zoomToProvince(d) {
+            if (!d) return;
+
+            updateBreadcrumb(d.properties.name);
+
+            const [[x0, y0], [x1, y1]] = pathGenerator.bounds(d);
+            const dx = x1 - x0;
+            const dy = y1 - y0;
+            const x = (x0 + x1) / 2;
+            const y = (y0 + y1) / 2;
+            const scale = Math.max(1.5, Math.min(12, 0.9 / Math.max(dx / width, dy / height)));
+            const translate = [width / 2 - scale * x, height / 2 - scale * y];
+
+            svg.transition()
+                .duration(900)
+                .call(
+                    zoom.transform,
+                    d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale)
+                )
+                .on("end", () => renderProvinceMap(d));
+        }
+
+        function resetZoom() {
+            updateBreadcrumb();
+            svg.transition()
+                .duration(900)
+                .call(
+                    zoom.transform,
+                    d3.zoomIdentity
+                ).on("end", renderChinaMap);
+        }
+
+        // 点击空白区域返回中国地图
+        svg.on("click", function (event) {
+            if (currentView === 'province') {
+                resetZoom();
+            }
+        });
+
+        function updateBreadcrumb(provinceName = null) {
+            const breadcrumb = document.getElementById('breadcrumb');
+            if (!provinceName) {
+                breadcrumb.innerHTML = '<span class="breadcrumb-item">中国</span>';
+            } else {
+                breadcrumb.innerHTML = `
+                    <span class="breadcrumb-item" onclick="resetZoom()">中国</span>
+                    <span class="breadcrumb-separator">></span>
+                    <span class="breadcrumb-item">${provinceName}</span>
+                `;
+            }
+        }
+
+        function isProvinceVisited(provinceName) {
+            // 检查该省份下是否有任何一个城市被访问过
+            return Object.keys(travelData).some(cityName => {
+                const cityData = travelData[cityName];
+                if (cityData.province === provinceName) {
+                    return true;
+                }
+                // 兼容旧的匹配逻辑
+                const provinceShortName = provinceName.replace(/省|市|自治区|特别行政区|壮族|维吾尔|回族/g, '');
+                return cityName.includes(provinceShortName);
+            });
+        }
+
+        // 检查是否为直辖市
+        function isDirectMunicipality(provinceName) {
+            const municipalities = ['北京市', '上海市', '天津市', '重庆市'];
+            return municipalities.includes(provinceName);
+        }
+
+        // --- 跟随鼠标的工具提示框 ---
+        function showFloatingTooltip(event, text) {
+            const rect = document.querySelector('.map-container').getBoundingClientRect();
+            floatingTooltip
+                .style("opacity", 1)
+                .html(text)
+                .style("left", (event.clientX - rect.left + 15) + "px")
+                .style("top", (event.clientY - rect.top - 10) + "px");
+        }
+
+        function moveFloatingTooltip(event) {
+            const rect = document.querySelector('.map-container').getBoundingClientRect();
+            floatingTooltip
+                .style("left", (event.clientX - rect.left + 15) + "px")
+                .style("top", (event.clientY - rect.top - 10) + "px");
+        }
+
+        function hideFloatingTooltip() {
+            floatingTooltip.style("opacity", 0);
+        }
+
+        // --- 模态框功能 ---
+        function showCityDetails(cityName) {
+            const modal = document.getElementById('cityModal');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+
+            title.textContent = cityName;
+            const records = travelData[cityName]?.records || [];
+
+            if (records.length === 0) {
+                body.innerHTML = '<div class="no-records">你还没有来过这里，快把它加入你的旅行清单吧！</div>';
+            } else {
+                let html = '';
+                records.forEach(record => {
+                    const stars = '🌟'.repeat(record.rating);
+                    html += `
+                        <div class="record-item">
+                            <div class="record-date">访问日期: ${record.date}</div>
+                            <div class="record-rating">${stars} (${record.rating}/5)</div>
+                            <div class="record-review">${record.review}</div>
+                            ${record.image ? `<div style="margin-top: 10px;"><img src="${record.image}" alt="${cityName}" style="width: 100%; max-width: 300px; border-radius: 8px; display: block;" onerror="this.style.display='none'"></div>` : ''}
+                        </div>`;
+                });
+                body.innerHTML = html;
+            }
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('cityModal').classList.remove('show');
+        }
+
+        function showLoading(isLoading) {
+            loadingIndicator.style.display = isLoading ? 'block' : 'none';
+        }
+
+        // 点击模态框外部关闭
+        document.getElementById('cityModal').addEventListener('click', function (e) {
+            if (e.target === this) closeModal();
+        });
+
+    </script>
+</body>
+
+</html>

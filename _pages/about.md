@@ -116,3 +116,10 @@ Coming soon
     
   </ul>
 </div>
+
+<span class='anchor' id='-more-pages'></span>
+# 📃 More Pages
+
+
+- [My Traveling Record](/travel) — China City Travel Footprint Map
+  > This is a small website I designed myself, hoping to make initial use of this site to showcase my interests and technical practice.
